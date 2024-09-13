@@ -1,4 +1,4 @@
-**Check out the project live at** <https://bitblocks.netlify.app/>  
+**Check out the project live at** <https://blockbits.netlify.app/>  
 
 **BitBlocks**  
 A fully functional blockchain and cryptocurrency simulation that allows users to create transactions, mine blocks, and track their balance.  
