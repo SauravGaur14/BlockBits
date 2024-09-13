@@ -8,6 +8,7 @@ class Transaction {
     this.to = to;
     this.from = from;
     this.amount = amount;
+    this.timestamp = Date.now();
   }
 
   calculateHash() {
@@ -46,7 +47,7 @@ class Block {
       this.previousHash +
         this.timestamp +
         this.nonce +
-        JSON.stringify(this.transactions)
+        JSON.stringify(this.transactions),
     ).toString();
   }
 
@@ -70,13 +71,14 @@ class Block {
 class Blockchain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
-    this.difficulty = 2;
+    this.difficulty = 3;
     this.pendingTransactions = [];
-    this.miningReward = 100;
+    this.miningReward = 10;
+    this.initialBalance = 100;
   }
 
   createGenesisBlock() {
-    return new Block("01/01/2023", "Genesis Block", "0");
+    return new Block(Date.now(), [], "0");
   }
 
   getLatestBlock() {
@@ -84,29 +86,43 @@ class Blockchain {
   }
 
   minePendingTransaction(miningRewardAddress) {
-    let block = new Block(Date.now(), this.pendingTransactions);
+    // Add the mining reward transaction to the list of pending transactions
+    const rewardTransaction = new Transaction(
+      null,
+      miningRewardAddress,
+      this.miningReward,
+    );
+    this.pendingTransactions.push(rewardTransaction);
+
+    // Create a new block with the current list of pending transactions
+    let block = new Block(
+      Date.now(),
+      this.pendingTransactions,
+      this.getLatestBlock().hash,
+    );
     block.mineBlock(this.difficulty);
+
+    // Add the newly mined block to the chain
     this.chain.push(block);
 
-    // reset the pendingTransactions and create a new transaction to give the miningReward
-    this.pendingTransactions = [
-      new Transaction(null, miningRewardAddress, this.miningReward),
-    ];
+    // Reset the pending transactions for the next block
+    this.pendingTransactions = [];
   }
 
-  addTransaction(transaction) {
-    if (!transaction.from || !transaction.to) {
-      throw new Error("Transaction must have to and from addresses");
+  addTransactions(transactions) {
+    for (const transaction of transactions) {
+      if (!transaction.from || !transaction.to) {
+        throw new Error("Transaction must have to and from addresses");
+      }
+      if (!transaction.isValid()) {
+        throw new Error("Can't add invalid transaction to chain");
+      }
     }
-
-    if (!transaction.isValid()) {
-      throw new Error("Can't add invalid transaction to chain");
-    }
-    this.pendingTransactions.push(transaction);
+    this.pendingTransactions = [...this.pendingTransactions, ...transactions];
   }
 
   getBalance(address) {
-    let balance = 0;
+    let balance = this.initialBalance;
 
     for (let block of this.chain) {
       for (let t of block.transactions) {
@@ -140,4 +156,4 @@ class Blockchain {
   }
 }
 
-export { Block, Blockchain };
+export { Block, Blockchain, Transaction };

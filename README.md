@@ -1,8 +1,15 @@
-# React + Vite
+**Check out the project live at** <https://bitblocks.netlify.app/>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**BitBlocks**
+A fully functional blockchain and cryptocurrency simulation that allows users to create transactions, mine blocks, and track their balance. This project demonstrates core blockchain principles such as proof-of-work, transaction validation, and mining rewards. Built using React for the user interface and elliptic curve cryptography (ECC) for securing transactions.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Features**
+**Single Wallet System:** Generate and manage transactions from a single wallet.
+**Mining Blocks:** Validate pending transactions by mining new blocks and earn mining rewards.
+**Transaction History:** View detailed transaction history and balances in real-time.
+**Proof-of-Work Mechanism:** Implements difficulty-based mining to secure the blockchain.
+**Elliptic Curve Cryptography:** Ensures secure transactions using ECC.
+**Technologies Used**
+**React:** For building the UI and managing state.
+**Elliptic:** For implementing elliptic curve cryptography.
+**Tailwind CSS:** For responsive, utility-first styling.
